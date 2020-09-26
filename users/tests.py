@@ -1,26 +1,25 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
+from django.urls import reverse, reverse_lazy
+from .models import CustomUser
 
 # Create your tests here.
 
 class CustomUserTests(TestCase):
 
-    # def test_create_user(self):
-    #     User = get_user_model()
-    #     user = User.objects.create_user(email='normal@user.com', username='foo')
-    #     self.assertEqual(user.email, 'normal@user.com')
-    #     self.assertTrue(user.is_active)
-    #     self.assertFalse(user.is_staff)
-    #     self.assertFalse(user.is_superuser)
-    #     try:
-    #         # username is None for the AbstractUser option
-    #         # username does not exist for the AbstractBaseUser option
-    #         self.assertIsNone(user.username)
-    #     except AttributeError:
-    #         pass
-    #     with self.assertRaises(TypeError):
-    #         User.objects.create_user()
-    #     with self.assertRaises(TypeError):
-    #         User.objects.create_user(email='')
-    #     with self.assertRaises(ValueError):
-    #         User.objects.create_user(email='', username="foo")
+    def setUp(self):
+        self.user = get_user_model().objects.create_user(
+            username='user',
+            email='user@gmail.com',
+            password='password'
+        )
+
+        self.user1 = get_user_model().objects.create_user(
+            username='user1',
+            email='user1@gmail.com',
+            password='password'
+        )
+
+    def test_the_view(self):
+        response = self.client.get(reverse('home'))
+        self.assertEqual(response.status_code,200)
